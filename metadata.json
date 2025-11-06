@@ -1,0 +1,5 @@
+
+{
+  "name": "Event Scheduler Query",
+  "description": "An interface to specify a date and time range to query for all scheduled events that fall within that time frame, using AI to generate the events."
+}
