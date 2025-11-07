@@ -1,4 +1,4 @@
-function swap(arr: Array<number>, firstIndex: number, secondIndex: number): Array<number> {
+function swap<T>(arr: Array<T>, firstIndex: number, secondIndex: number): Array<T> {
 	const hold = arr[firstIndex]
 	arr[firstIndex] = arr[secondIndex]
 	arr[secondIndex] = hold

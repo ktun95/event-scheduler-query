@@ -1,4 +1,4 @@
-import { swap } from "./swap"
+import { swap } from "@/core/util/swap"
 
 function bubble_sort(arr: Array<number>): Array<number> {
 	// Pass through the array over and over, lifting the highest encountered value rightward each time.

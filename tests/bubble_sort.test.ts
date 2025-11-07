@@ -1,5 +1,5 @@
 import { test, expect } from "vitest"
-import { bubble_sort } from "@/core/bubble_sort"
+import { bubble_sort } from "@/core/sorting/bubble_sort"
 
 test("Bubble sort", () => {
 	const test_array = [4, 11, 7, 20, 5, 6, 32, 19]
