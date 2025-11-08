@@ -1,5 +1,5 @@
 import { test, expect } from "vitest"
-import { swap } from "@/core/swap"
+import { swap } from "@/core/util/swap"
 
 test("swap", () => {
 	const test_array = [1, 3, 2]
