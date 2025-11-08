@@ -4,34 +4,39 @@ import { generic_bubble_sort } from "./sorting/generic_bubble_sort"
 import { lower_interval_comparator } from "./comparators/lower_interval_comparator"
 import { upper_interval_comparator } from "./comparators/upper_interval_comparator"
 
-function createIntervalTree(intervals: Set<[number, number]>): IntervalTreeNode {
+function create_interval_tree(intervals: Array<[number, number]>): IntervalTreeNode {
+	if (intervals.length === 0) return null
 	// 1. Get median value
 	const median = get_median(intervals)
 	// 2. Get L, R, and M
 
 	// L: Set of intervals whose higher value is < median
-	let L = []
+	let L: Array<[number, number]> = []
 	// R: Set of intervals whose lower value is > median
-	let R = []
+	let R: Array<[number, number]> = []
 	// M: Set of intervals that are intersected by median
-	let M = []
+	let M: Array<[number, number]> = []
 
-	for (const interval of intervals) {
-		if (interval[1] < median) {
+	for (let i = 0; i < intervals.length; i++) {
+		if (intervals[i][1] < median) {
 			// L: Set of intervals whose higher value is < median
-			L.push(interval)
-		} else if (interval[0] > median) {
+			L.push(intervals[i])
+		} else if (intervals[i][0] > median) {
 			// R: Set of intervals whose lower value is > median
-			R.push(interval)
+			R.push(intervals[i])
 		} else {
-			M.push(interval)
+			M.push(intervals[i])
 		}
-
-		const MR = generic_bubble_sort(upper_interval_comparator)(M)
-		const ML = generic_bubble_sort(lower_interval_comparator)(M)
 	}
+	const MR = generic_bubble_sort(upper_interval_comparator)(M)
+	const ML = generic_bubble_sort(lower_interval_comparator)(M)
 
+	const node = new IntervalTreeNode(median, MR, ML)
 
-	// How do we know when an interval should be stored on a node?
-	//
+	node.left = create_interval_tree(L)
+	node.right = create_interval_tree(R)
+
+	return node
 }
+
+export { create_interval_tree }
