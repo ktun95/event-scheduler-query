@@ -1,6 +1,6 @@
 import { bubble_sort } from "./sorting/bubble_sort"
 
-function get_median(intervals: Set<[number, number]>): number {
+function get_median(intervals: Array<[number, number]>): number {
 	const points = []
 	for (const interval of intervals) {
 		points.push(interval[0])
