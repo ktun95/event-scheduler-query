@@ -9,39 +9,100 @@ class AugmentedIntervalTree {
 	}
 
 	/**
-	 * Inserts an interval into the tree
-	 * Time complexity: O(log n) average case, O(n) worst case (unbalanced)
+	 * Inserts an interval into the tree with AVL self-balancing
+	 * Time complexity: O(log n) guaranteed
 	 */
 	insert(interval: Interval): void {
-		if (this.root === null) {
-			this.root = new AugmentedBSTNode(interval)
-			return
-		}
-
-		this._insertHelper(this.root, interval)
+		this.root = this._insertHelper(this.root, interval)
 	}
 
-	private _insertHelper(node: AugmentedBSTNode, interval: Interval): void {
+	private _insertHelper(
+		node: AugmentedBSTNode | null,
+		interval: Interval,
+	): AugmentedBSTNode {
+		// Standard BST insert
+		if (node === null) {
+			return new AugmentedBSTNode(interval)
+		}
+
 		const start = interval[0]
 
 		if (start < node.start) {
-			// Go left
-			if (node.left === null) {
-				node.left = new AugmentedBSTNode(interval)
-			} else {
-				this._insertHelper(node.left, interval)
-			}
+			node.left = this._insertHelper(node.left, interval)
 		} else {
-			// Go right (including equal starts - arbitrary choice)
-			if (node.right === null) {
-				node.right = new AugmentedBSTNode(interval)
-			} else {
-				this._insertHelper(node.right, interval)
-			}
+			node.right = this._insertHelper(node.right, interval)
 		}
 
-		// Update max value after insertion
+		// Update height and max after insertion
+		node.updateHeight()
 		node.updateMax()
+
+		// Get balance factor
+		const balance = node.getBalanceFactor()
+
+		// Left-Left case
+		if (balance > 1 && node.left && interval[0] < node.left.start) {
+			return this._rightRotate(node)
+		}
+
+		// Right-Right case
+		if (balance < -1 && node.right && interval[0] >= node.right.start) {
+			return this._leftRotate(node)
+		}
+
+		// Left-Right case
+		if (balance > 1 && node.left && interval[0] >= node.left.start) {
+			node.left = this._leftRotate(node.left)
+			return this._rightRotate(node)
+		}
+
+		// Right-Left case
+		if (balance < -1 && node.right && interval[0] < node.right.start) {
+			node.right = this._rightRotate(node.right)
+			return this._leftRotate(node)
+		}
+
+		return node
+	}
+
+	/**
+	 * Performs a right rotation for AVL balancing
+	 */
+	private _rightRotate(y: AugmentedBSTNode): AugmentedBSTNode {
+		const x = y.left!
+		const T2 = x.right
+
+		// Perform rotation
+		x.right = y
+		y.left = T2
+
+		// Update heights and max values
+		y.updateHeight()
+		y.updateMax()
+		x.updateHeight()
+		x.updateMax()
+
+		return x
+	}
+
+	/**
+	 * Performs a left rotation for AVL balancing
+	 */
+	private _leftRotate(x: AugmentedBSTNode): AugmentedBSTNode {
+		const y = x.right!
+		const T2 = y.left
+
+		// Perform rotation
+		y.left = x
+		x.right = T2
+
+		// Update heights and max values
+		x.updateHeight()
+		x.updateMax()
+		y.updateHeight()
+		y.updateMax()
+
+		return y
 	}
 
 	/**
