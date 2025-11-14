@@ -1,11 +1,11 @@
-import { IntervalTreeNode } from "./IntervalTreeNode"
-import { type Interval } from "./types"
-import { get_median } from "./get_median"
-import { generic_bubble_sort } from "./sorting/generic_bubble_sort"
-import { lower_interval_comparator } from "./comparators/lower_interval_comparator"
-import { upper_interval_comparator } from "./comparators/upper_interval_comparator"
+import { IntervalTreeNode } from "@/core/classes/IntervalTreeNode"
+import { type Interval } from "@/core/types"
+import { get_median } from "@/core/get_median"
+import { generic_bubble_sort } from "@/core/sorting/generic_bubble_sort"
+import { lower_interval_comparator } from "@/core/comparators/lower_interval_comparator"
+import { upper_interval_comparator } from "@/core/comparators/upper_interval_comparator"
 
-function create_interval_tree(intervals: Array<Interval>): IntervalTreeNode {
+function create_interval_tree(intervals: Array<Interval>): IntervalTreeNode | null {
 	if (intervals.length === 0) return null
 	// 1. Get median value
 	const median = get_median(intervals)
