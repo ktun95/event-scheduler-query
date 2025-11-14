@@ -1,5 +1,5 @@
-import { type Interval } from "./types"
-import { IntervalTreeNode } from "./IntervalTreeNode"
+import { type Interval } from "@/core/types"
+import { IntervalTreeNode } from "@/core/classes/IntervalTreeNode"
 
 // Given a query value, return all intervals that contain that value.
 function query_interval_tree_naive(tree: IntervalTreeNode, query: number): Array<Interval> {
